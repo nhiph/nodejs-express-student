@@ -1,6 +1,6 @@
 const express = require('express')
-const app = express()
-const port = 3000
+const studentRouter = express.Router() //  use router by express
+
 let studentList = [
     {
         "id": 1,
@@ -28,15 +28,13 @@ let studentList = [
     }
 ]
 
-console.log('studentList', studentList);
-// transform req & res to json for implementing easily
-app.use(express.json())
+// method.(url, () => {} controller )
 
-app.get('/students', (req, res) => {
+studentRouter.get('/', (req, res) => {
     res.status(200).send(studentList)
 })
 
-app.get('/students/:id', (req, res) => {
+studentRouter.get('/:id', (req, res) => {
     const { id } = req.params
     const index = studentList.findIndex(student => +(student.id) === +id)
     if(index !== -1) {
@@ -46,14 +44,14 @@ app.get('/students/:id', (req, res) => {
     }
 })
 
-app.post('/students', (req, res) => {
+studentRouter.post('/', (req, res) => {
     const student = {...req.body, id: Math.random()}
     console.log('student', student);
     studentList = [...studentList, student] // studentList.push(student)
     res.status(201).send(student)
 })
 
-app.put('/students/:id', (req, res) => {
+studentRouter.put('/:id', (req, res) => {
     const { id } = req.params
     const student = {...req.body, id}
     const index = studentList.findIndex(student => +student.id === +id)
@@ -65,13 +63,10 @@ app.put('/students/:id', (req, res) => {
     }
 })
 
-app.delete('/students/:id', (req, res) => {
+studentRouter.delete('/:id', (req, res) => {
     const { id } = req.params
     studentList = studentList.filter(student => +student.id !== +id)
     res.status(200).send(`Delete student ${id} success`)
-    
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+module.exports = studentRouter

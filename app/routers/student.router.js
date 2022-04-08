@@ -1,10 +1,13 @@
 const express = require('express')
 const { getStudentList, getStudentDetail, postStudent, updateStudent, deleteStudent } = require('../controllers/student.controller')
 const { logGetList, logGetDetail } = require('../middlewares/logger/log-feature')
+const { checkEmpty, checkClassRange } = require('../middlewares/validations/student.validation')
+
 const studentRouter = express.Router() //  use router by express
 
 studentRouter.use(express.json()) // transform req & res to json for implementing easily
 
+// middleware luon use in routers, betwwen routers and controller
 // method.(url, (req, res, next) => {} middleware1, (req, res, next) => {} middleware2, .. , (req, res) => {} controller )
 
 studentRouter.get('/', 
@@ -26,7 +29,7 @@ studentRouter.get(
     getStudentDetail
 )
 
-studentRouter.post('/', postStudent)
+studentRouter.post('/', checkEmpty, checkClassRange, postStudent)
 
 studentRouter.put('/:id', updateStudent)
 

@@ -6,3 +6,5 @@
     3.2 services
     3.2 middlewares
 4. connect mysql: npm i sequelize mysql2
+5. create configs
+6. open FE source, npm install, open with live serve
